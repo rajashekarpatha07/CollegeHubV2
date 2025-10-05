@@ -1,0 +1,4 @@
+node_modules/\n.env\ndist/
+.env
+/src/generated/prisma
+node_modules

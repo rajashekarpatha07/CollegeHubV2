@@ -1,0 +1,177 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// --- ENUMS ---
+
+enum RoleName {
+  ADMIN
+  STUDENT
+  FACULTY
+}
+
+enum BookType {
+  TEXTBOOK
+  REFERENCE
+}
+
+enum MaterialType {
+  Note
+  PYQP
+  Syllabus
+}
+
+enum ExamType {
+  Mid_1
+  Mid_2
+  Semester
+  NA
+}
+
+
+// --- MODELS ---
+
+model Role {
+  roleId   Int      @id @default(autoincrement())
+  roleName RoleName @unique
+  users    User[]
+}
+
+model User {
+  userId         Int             @id @default(autoincrement())
+  loginId        String          @unique
+  rollNumber     String?         @unique
+  email          String?         @unique
+  passwordHash   String
+  name           String
+  roleId         Int
+  role           Role            @relation(fields: [roleId], references: [roleId])
+  uploadedMaterials Material[]   @relation("UploadedBy")
+  postedAnnouncements Announcement[] @relation("PostedBy")
+}
+
+model Branch {
+  branchId        Int                  @id @default(autoincrement())
+  branchName      String
+  branchCode      String               @unique
+  courseOfferings CourseOffering[]
+  electiveGroups  ElectiveGroupBranch[]
+  announcementTargets AnnouncementTarget[]
+}
+
+model Subject {
+  subjectId           Int                     @id @default(autoincrement())
+  subjectName         String                  @unique
+  courseOfferings     CourseOffering[]
+  books               Book[]
+  electiveGroupChoices ElectiveGroupSubject[]
+}
+
+model CourseOffering {
+  offeringId     Int             @id @default(autoincrement())
+  subjectCode    String          @unique
+  semester       Int
+  regulation     String
+  lectureHours   Int
+  tutorialHours  Int
+  practicalHours Int
+  credits        Float
+  subjectId      Int
+  branchId       Int
+  subject        Subject         @relation(fields: [subjectId], references: [subjectId])
+  branch         Branch          @relation(fields: [branchId], references: [branchId])
+  syllabusUnits  SyllabusUnit[]
+  materials      Material[]
+}
+
+model SyllabusUnit {
+  unitId     Int            @id @default(autoincrement())
+  unitNumber Int
+  unitTitle  String
+  offeringId Int
+  offering   CourseOffering @relation(fields: [offeringId], references: [offeringId])
+  materials  Material[]
+
+  @@unique([offeringId, unitNumber])
+}
+
+model Book {
+  bookId      Int      @id @default(autoincrement())
+  bookType    BookType
+  bookDetails String   @db.Text
+  subjectId   Int
+  subject     Subject  @relation(fields: [subjectId], references: [subjectId])
+}
+
+model Material {
+  materialId   Int          @id @default(autoincrement())
+  title        String
+  filePath     String
+  materialType MaterialType
+  examType     ExamType     @default(NA)
+  academicYear Int?
+  uploadedAt   DateTime     @default(now())
+  offeringId   Int?
+  unitId       Int?
+  uploaderId   Int
+  offering     CourseOffering? @relation(fields: [offeringId], references: [offeringId])
+  unit         SyllabusUnit?   @relation(fields: [unitId], references: [unitId])
+  uploader     User         @relation("UploadedBy", fields: [uploaderId], references: [userId])
+}
+
+model Announcement {
+  announcementId Int                  @id @default(autoincrement())
+  title          String
+  content        String               @db.Text
+  createdAt      DateTime             @default(now())
+  authorId       Int
+  author         User                 @relation("PostedBy", fields: [authorId], references: [userId])
+  targets        AnnouncementTarget[]
+}
+
+model AnnouncementTarget {
+  targetId       Int           @id @default(autoincrement())
+  announcementId Int
+  branchId       Int?
+  semester       Int?
+  announcement   Announcement  @relation(fields: [announcementId], references: [announcementId])
+  branch         Branch?       @relation(fields: [branchId], references: [branchId])
+}
+
+model ElectiveGroup {
+  groupId    Int                   @id @default(autoincrement())
+  groupName  String
+  semester   Int
+  regulation String
+  subjects   ElectiveGroupSubject[]
+  branches   ElectiveGroupBranch[]
+}
+
+model ElectiveGroupSubject {
+  group     ElectiveGroup @relation(fields: [groupId], references: [groupId])
+  groupId   Int
+  subject   Subject       @relation(fields: [subjectId], references: [subjectId])
+  subjectId Int
+
+  @@id([groupId, subjectId])
+}
+
+model ElectiveGroupBranch {
+  group    ElectiveGroup @relation(fields: [groupId], references: [groupId])
+  groupId  Int
+  branch   Branch        @relation(fields: [branchId], references: [branchId])
+  branchId Int
+
+  @@id([groupId, branchId])
+}
