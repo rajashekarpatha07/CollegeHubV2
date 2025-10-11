@@ -10,10 +10,10 @@ const hashpassword = async (password: string): Promise<string> => {
 };
 
 const verifypassword = async (
-  hashedpassword: string,
-  plainpassword: string
+  plainpassword: string,
+  hashedpassword: string
 ): Promise<boolean> => {
-  return await bcrypt.compare(hashedpassword, plainpassword);
+  return await bcrypt.compare(plainpassword, hashedpassword);
 };
 
 const generateAccessToken = (payload: object): string => {

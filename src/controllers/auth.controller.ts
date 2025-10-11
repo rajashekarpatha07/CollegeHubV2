@@ -1,100 +1,144 @@
 import { Request, Response } from "express";
 import prisma from "../db/prisma";
-import { hashpassword } from "../utils/auth.util/auth.util";
 import { asyncHandler } from "../utils/AsyncHandler";
 import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponse";
-import { verifypassword } from "../utils/auth.util/auth.util";
 import {
-  generateRefreshToken,
   generateAccessToken,
+  hashpassword,
+  verifypassword,
 } from "../utils/auth.util/auth.util";
+import jwt from "jsonwebtoken";
 
-const registeruser = asyncHandler(async (req: Request, res: Response) => {
-  const { loginId, rollNumber, email, password, name, role } = req.body;
+/**
+ * @route POST /api/v1/students/register
+ * @description Register a new student
+ * @access Public
+ */
 
-  // Check if user already exists
-  const UserExist = await prisma.user.findUnique({
-    where: { loginId },
+const StudentRegister = asyncHandler(async (req: Request, res: Response) => {
+  const { roll_number, name, email, password, batch, semester, branch_code } =
+    req.body;
+
+  if (!roll_number || !name || !email || !password || !batch || !semester)
+    throw new ApiError(400, "All fields are required");
+
+  const IsBranchExist = await prisma.branch.findUnique({
+    where: { branch_code: branch_code },
   });
-  if (UserExist) throw new ApiError(401, "User already exist try to login");
 
-  // Find roleId using role name
-  const userRole = await prisma.role.findUnique({
-    where: { roleName: role },
-  });
-  if (!userRole) throw new ApiError(400, "Invalid role provided");
+  if (!IsBranchExist) {
+    throw new ApiError(400, "The selected branch does not exist.");
+  }
 
-  // Hash password
-  const hashedpass = await hashpassword(password);
-
-  // Create user
-  const user = await prisma.user.create({
-    data: {
-      loginId,
-      rollNumber,
-      email,
-      passwordHash: hashedpass,
-      name,
-      roleId: userRole.roleId,
+  const existingStudent = await prisma.student.findFirst({
+    where: {
+      OR: [{ roll_number }, { email }],
     },
   });
 
-  return res
-    .status(201)
-    .json(new ApiResponse(200, user, "User Created Successfully"));
-});
-
-
- const loginUser = asyncHandler(async (req: Request, res: Response) => {
-  // 1. Destructure and validate input using camelCase
-  const { loginId, password } = req.body;
-  console.log(loginId, password)
-  if (!loginId || !password) {
-    throw new ApiError(400, "Login ID and Password are required");
+  if (existingStudent) {
+    const field =
+      existingStudent.roll_number === roll_number ? "Roll number" : "Email";
+    throw new ApiError(409, `${field} is already registered.`); // 409 Conflict
   }
 
-  // 2. Find the user in the database
-  const user = await prisma.user.findUnique({
-    where: { loginId: loginId },
-    include: { role: true },
+  const hashedPassword = await hashpassword(password);
+
+  // 6. Create the new student record in the database
+  const createdStudent = await prisma.student.create({
+    data: {
+      roll_number,
+      name,
+      email,
+      password: hashedPassword,
+      batch: Number(batch),
+      semester: Number(semester),
+      branch_code,
+    },
+    // Select the fields to return, excluding the password
+    select: {
+      roll_number: true,
+      name: true,
+      email: true,
+      batch: true,
+      semester: true,
+      branch_code: true,
+    },
   });
 
-  // 3. Verify the password. Use a generic error for both user not found and invalid password.
-  // This prevents user enumeration attacks.
-  const isPasswordValid = user ? await verifypassword(password, user.passwordHash) : false;
-
-  if (!user || !isPasswordValid) {
-    throw new ApiError(401, "Invalid user credentials");
-  }
-
-  // 4. Prepare the payload for the tokens
-  const tokenPayload = {
-    userId: user.userId,
-    loginId: user.loginId,
-    role: user.role.roleName,
-  };
-
-  // 5. Generate tokens
-  const refreshToken = generateRefreshToken(tokenPayload);
-  const accessToken = generateAccessToken(tokenPayload);
-
-  // 6. Define secure cookie options
-  const cookieOptions = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict" as const,
-  };
-
-  // 7. Exclude sensitive data from the final user object
-  const { passwordHash, ...userResponse } = user;
-
-  // 8. Send response with cookies and user data
+  // 7. Send a successful response using your ApiResponse class
   return res
-    .status(200)
-    .cookie("accessToken", accessToken, cookieOptions)
-    .cookie("refreshToken", refreshToken, cookieOptions)
-    .json(new ApiResponse(200, userResponse, "User login successful")); // Corrected typo
+    .status(201)
+    .json(
+      new ApiResponse(201, createdStudent, "Student registered successfully!")
+    );
 });
 
-export { registeruser, loginUser};
+/**
+ * @route POST /api/v1/students/login
+ * @description Login a student
+ * @access Public
+ */
+const StudentLogin = asyncHandler(async (req: Request, res: Response) => {
+  const { roll_number, password } = req.body;
+
+  if (!roll_number || !password) {
+    throw new ApiError(400, "Roll number and password are required");
+  }
+
+  // Find student by roll_number
+  const student = await prisma.student.findUnique({
+    where: { roll_number },
+    select: {
+      roll_number: true,
+      name: true,
+      email: true,
+      password: true,
+      batch: true,
+      semester: true,
+      branch_code: true,
+    },
+  });
+
+  if (!student) {
+    throw new ApiError(401, "Invalid roll number or password");
+  }
+
+  // Verify password
+  const isPasswordValid = await verifypassword(password, student.password);
+  if (!isPasswordValid) {
+    throw new ApiError(401, "Invalid roll number or password");
+  }
+
+  // Generate JWT token
+  const token = generateAccessToken({
+    roll_number: student.roll_number,
+    email: student.email,
+    userType: "student",
+  });
+
+  // Remove password from response
+  const { password: _, ...studentWithoutPassword } = student;
+
+  // Set cookie and send response
+  res.cookie("accessToken", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  });
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        student: studentWithoutPassword,
+        token,
+      },
+      "Student logged in successfully!"
+    )
+  );
+});
+
+export { StudentRegister, StudentLogin };

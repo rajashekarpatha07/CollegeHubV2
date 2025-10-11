@@ -1,177 +1,115 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-generator client {
-  provider = "prisma-client-js"
-}
+// This is my final Prisma schema file.
+// It includes the many-to-many relationship for Subjects and Branches.
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-// --- ENUMS ---
-
-enum RoleName {
-  ADMIN
-  STUDENT
-  FACULTY
+generator client {
+  provider = "prisma-client-js"
 }
 
-enum BookType {
-  TEXTBOOK
-  REFERENCE
+// ================================================================= //
+//                            CORE MODELS                            //
+// ================================================================= //
+
+model Student {
+  roll_number String  @id @db.VarChar(50)
+  name        String  @db.VarChar(100)
+  email       String  @unique @db.VarChar(100)
+  password    String  @db.VarChar(255) // Should be a hashed password
+  batch       Int
+  semester    Int
+
+  // Relation to Branch
+  branch_code String @db.VarChar(10)
+  branch      Branch @relation(fields: [branch_code], references: [branch_code])
 }
 
-enum MaterialType {
-  Note
-  PYQP
-  Syllabus
-}
-
-enum ExamType {
-  Mid_1
-  Mid_2
-  Semester
-  NA
-}
-
-
-// --- MODELS ---
-
-model Role {
-  roleId   Int      @id @default(autoincrement())
-  roleName RoleName @unique
-  users    User[]
-}
-
-model User {
-  userId         Int             @id @default(autoincrement())
-  loginId        String          @unique
-  rollNumber     String?         @unique
-  email          String?         @unique
-  passwordHash   String
-  name           String
-  roleId         Int
-  role           Role            @relation(fields: [roleId], references: [roleId])
-  uploadedMaterials Material[]   @relation("UploadedBy")
-  postedAnnouncements Announcement[] @relation("PostedBy")
+model Faculty {
+  id              Int             @id @default(autoincrement())
+  name            String          @db.VarChar(100)
+  email           String          @unique @db.VarChar(100)
+  password        String          @db.VarChar(255) // Should be a hashed password
+  materials       Material[]
+  question_papers QuestionPaper[]
+  announcements   Announcement[]
 }
 
 model Branch {
-  branchId        Int                  @id @default(autoincrement())
-  branchName      String
-  branchCode      String               @unique
-  courseOfferings CourseOffering[]
-  electiveGroups  ElectiveGroupBranch[]
-  announcementTargets AnnouncementTarget[]
+  branch_code String @id @db.VarChar(10)
+  branch_name String @unique @db.VarChar(100)
+
+  // A Branch has many Subjects, linked through the BranchSubject table
+  subjects    BranchSubject[]
+  // A Branch has many Students
+  students    Student[]
 }
 
 model Subject {
-  subjectId           Int                     @id @default(autoincrement())
-  subjectName         String                  @unique
-  courseOfferings     CourseOffering[]
-  books               Book[]
-  electiveGroupChoices ElectiveGroupSubject[]
+  subject_code String @id @db.VarChar(10)
+  subject_name String @db.VarChar(100)
+  semester     Int
+
+  // A Subject can belong to many Branches, linked through the BranchSubject table
+  branches        BranchSubject[]
+
+  // A Subject has many Materials and Question Papers
+  materials       Material[]
+  question_papers QuestionPaper[]
 }
 
-model CourseOffering {
-  offeringId     Int             @id @default(autoincrement())
-  subjectCode    String          @unique
-  semester       Int
-  regulation     String
-  lectureHours   Int
-  tutorialHours  Int
-  practicalHours Int
-  credits        Float
-  subjectId      Int
-  branchId       Int
-  subject        Subject         @relation(fields: [subjectId], references: [subjectId])
-  branch         Branch          @relation(fields: [branchId], references: [branchId])
-  syllabusUnits  SyllabusUnit[]
-  materials      Material[]
+// This is the "join table" that creates the many-to-many relationship.
+model BranchSubject {
+  // Relation to Branch
+  branch_code String @db.VarChar(10)
+  branch      Branch @relation(fields: [branch_code], references: [branch_code])
+
+  // Relation to Subject
+  subject_code String @db.VarChar(10)
+  subject      Subject @relation(fields: [subject_code], references: [subject_code])
+
+  // A combination of branch_code and subject_code must be unique.
+  @@id([branch_code, subject_code])
 }
 
-model SyllabusUnit {
-  unitId     Int            @id @default(autoincrement())
-  unitNumber Int
-  unitTitle  String
-  offeringId Int
-  offering   CourseOffering @relation(fields: [offeringId], references: [offeringId])
-  materials  Material[]
 
-  @@unique([offeringId, unitNumber])
-}
-
-model Book {
-  bookId      Int      @id @default(autoincrement())
-  bookType    BookType
-  bookDetails String   @db.Text
-  subjectId   Int
-  subject     Subject  @relation(fields: [subjectId], references: [subjectId])
-}
+// ================================================================= //
+//                          CONTENT MODELS                           //
+// ================================================================= //
 
 model Material {
-  materialId   Int          @id @default(autoincrement())
-  title        String
-  filePath     String
-  materialType MaterialType
-  examType     ExamType     @default(NA)
-  academicYear Int?
-  uploadedAt   DateTime     @default(now())
-  offeringId   Int?
-  unitId       Int?
-  uploaderId   Int
-  offering     CourseOffering? @relation(fields: [offeringId], references: [offeringId])
-  unit         SyllabusUnit?   @relation(fields: [unitId], references: [unitId])
-  uploader     User         @relation("UploadedBy", fields: [uploaderId], references: [userId])
+  id           Int      @id @default(autoincrement())
+  title        String   @db.VarChar(255)
+  description  String?  @db.Text
+  file_url     String   @db.VarChar(255)
+  upload_date  DateTime @default(now())
+  subject_code String   @db.VarChar(10)
+  subject      Subject  @relation(fields: [subject_code], references: [subject_code])
+  faculty_id   Int
+  faculty      Faculty  @relation(fields: [faculty_id], references: [id])
+}
+
+model QuestionPaper {
+  id           Int      @id @default(autoincrement())
+  title        String   @db.VarChar(255)
+  exam_year    Int
+  file_url     String   @db.VarChar(255)
+  upload_date  DateTime @default(now())
+  subject_code String   @db.VarChar(10)
+  subject      Subject  @relation(fields: [subject_code], references: [subject_code])
+  faculty_id   Int
+  faculty      Faculty  @relation(fields: [faculty_id], references: [id])
 }
 
 model Announcement {
-  announcementId Int                  @id @default(autoincrement())
-  title          String
-  content        String               @db.Text
-  createdAt      DateTime             @default(now())
-  authorId       Int
-  author         User                 @relation("PostedBy", fields: [authorId], references: [userId])
-  targets        AnnouncementTarget[]
-}
-
-model AnnouncementTarget {
-  targetId       Int           @id @default(autoincrement())
-  announcementId Int
-  branchId       Int?
-  semester       Int?
-  announcement   Announcement  @relation(fields: [announcementId], references: [announcementId])
-  branch         Branch?       @relation(fields: [branchId], references: [branchId])
-}
-
-model ElectiveGroup {
-  groupId    Int                   @id @default(autoincrement())
-  groupName  String
-  semester   Int
-  regulation String
-  subjects   ElectiveGroupSubject[]
-  branches   ElectiveGroupBranch[]
-}
-
-model ElectiveGroupSubject {
-  group     ElectiveGroup @relation(fields: [groupId], references: [groupId])
-  groupId   Int
-  subject   Subject       @relation(fields: [subjectId], references: [subjectId])
-  subjectId Int
-
-  @@id([groupId, subjectId])
-}
-
-model ElectiveGroupBranch {
-  group    ElectiveGroup @relation(fields: [groupId], references: [groupId])
-  groupId  Int
-  branch   Branch        @relation(fields: [branchId], references: [branchId])
-  branchId Int
-
-  @@id([groupId, branchId])
+  id                 Int      @id @default(autoincrement())
+  title              String   @db.VarChar(255)
+  content            String   @db.Text
+  post_date          DateTime @default(now())
+  faculty_id         Int
+  faculty            Faculty  @relation(fields: [faculty_id], references: [id])
+  target_branch_code String?  @db.VarChar(10)
+  target_batch       Int?
 }
