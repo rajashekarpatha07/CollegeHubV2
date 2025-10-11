@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 import prisma from './db/prisma'
 import cookieParser from 'cookie-parser'
 import cors from "cors";
-import authroutes from "./routes/auth.routes";
+import authroutes from "./routes/student.routes/auth.student.routes";
+import facultyroutes from "./routes/faculty.routes/auth.faculty.routes";
 import { ApiResponse } from "./utils/ApiResponse";
 import { ApiError } from "./utils/ApiError";
 import { Request, Response, NextFunction } from "express";
@@ -23,7 +24,8 @@ app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cookieParser());
 
-app.use("/api/v2/auth/", authroutes);
+app.use("/api/v2/auth/student", authroutes);
+app.use("/api/v2/auth/faculty", facultyroutes)
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error("Error caught:", err);

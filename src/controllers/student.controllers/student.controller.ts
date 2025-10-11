@@ -1,14 +1,13 @@
 import { Request, Response } from "express";
-import prisma from "../db/prisma";
-import { asyncHandler } from "../utils/AsyncHandler";
-import { ApiError } from "../utils/ApiError";
-import { ApiResponse } from "../utils/ApiResponse";
+import prisma from "../../db/prisma";
+import { asyncHandler } from "../../utils/AsyncHandler";
+import { ApiError } from "../../utils/ApiError";
+import { ApiResponse } from "../../utils/ApiResponse";
 import {
   generateAccessToken,
   hashpassword,
   verifypassword,
-} from "../utils/auth.util/auth.util";
-import jwt from "jsonwebtoken";
+} from "../../utils/auth.util/auth.util";
 
 /**
  * @route POST /api/v1/students/register
@@ -141,4 +140,6 @@ const StudentLogin = asyncHandler(async (req: Request, res: Response) => {
   );
 });
 
-export { StudentRegister, StudentLogin };
+
+
+export { StudentRegister, StudentLogin};
