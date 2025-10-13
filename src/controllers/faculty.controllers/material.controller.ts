@@ -49,7 +49,8 @@ export const getCloudinarySignature = asyncHandler(
  */
 export const createMaterial = asyncHandler(
   async (req: Request, res: Response) => {
-    const { title, description, file_url, subject_code } = req.body;
+    const { title, description, file_url, public_id, file_type, subject_code } =
+      req.body;
 
     const faculty = (req as any).user;
     const userType = (req as any).userType;
@@ -68,10 +69,12 @@ export const createMaterial = asyncHandler(
     const newMaterial = await prisma.material.create({
       data: {
         title,
-        description: description || null,
-        file_url, // Only the URL is saved
+        description: description || null, // Handle optional description
+        file_url,
+        public_id,
+        file_type,
         subject_code,
-        faculty_id: faculty.id,
+        faculty_id: faculty.id, // Link to the logged-in faculty
       },
     });
 

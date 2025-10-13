@@ -1,5 +1,6 @@
-// This is my final Prisma schema file.
+// This is the final Prisma schema file.
 // It includes the many-to-many relationship for Subjects and Branches.
+// It also includes updated fields for file management (e.g., Cloudinary).
 
 datasource db {
   provider = "mysql"
@@ -15,10 +16,10 @@ generator client {
 // ================================================================= //
 
 model Student {
-  roll_number String  @id @db.VarChar(50)
-  name        String  @db.VarChar(100)
-  email       String  @unique @db.VarChar(100)
-  password    String  @db.VarChar(255) // Should be a hashed password
+  roll_number String @id @db.VarChar(50)
+  name        String @db.VarChar(100)
+  email       String @unique @db.VarChar(100)
+  password    String @db.VarChar(255) // Should be a hashed password
   batch       Int
   semester    Int
 
@@ -38,52 +39,44 @@ model Faculty {
 }
 
 model Branch {
-  branch_code String @id @db.VarChar(10)
-  branch_name String @unique @db.VarChar(100)
-
-  // A Branch has many Subjects, linked through the BranchSubject table
+  branch_code String          @id @db.VarChar(10)
+  branch_name String          @unique @db.VarChar(100)
   subjects    BranchSubject[]
-  // A Branch has many Students
   students    Student[]
 }
 
 model Subject {
-  subject_code String @id @db.VarChar(10)
-  subject_name String @db.VarChar(100)
-  semester     Int
-
-  // A Subject can belong to many Branches, linked through the BranchSubject table
+  subject_code    String          @id @db.VarChar(10)
+  subject_name    String          @db.VarChar(100)
+  semester        Int
   branches        BranchSubject[]
-
-  // A Subject has many Materials and Question Papers
   materials       Material[]
   question_papers QuestionPaper[]
 }
 
-// This is the "join table" that creates the many-to-many relationship.
+// Join table for the many-to-many relationship between Branch and Subject
 model BranchSubject {
-  // Relation to Branch
   branch_code String @db.VarChar(10)
   branch      Branch @relation(fields: [branch_code], references: [branch_code])
 
-  // Relation to Subject
   subject_code String @db.VarChar(10)
   subject      Subject @relation(fields: [subject_code], references: [subject_code])
 
-  // A combination of branch_code and subject_code must be unique.
   @@id([branch_code, subject_code])
 }
 
 
 // ================================================================= //
-//                          CONTENT MODELS                           //
+//                           CONTENT MODELS                          //
 // ================================================================= //
 
 model Material {
   id           Int      @id @default(autoincrement())
   title        String   @db.VarChar(255)
   description  String?  @db.Text
-  file_url     String   @db.VarChar(255)
+  file_url     String   @db.VarChar(255) // URL from a service like Cloudinary
+  public_id    String   @db.VarChar(255) // The ID from Cloudinary for managing the file
+  file_type    String   @db.VarChar(50)  // e.g., 'image', 'pdf', 'video'
   upload_date  DateTime @default(now())
   subject_code String   @db.VarChar(10)
   subject      Subject  @relation(fields: [subject_code], references: [subject_code])
@@ -95,7 +88,9 @@ model QuestionPaper {
   id           Int      @id @default(autoincrement())
   title        String   @db.VarChar(255)
   exam_year    Int
-  file_url     String   @db.VarChar(255)
+  file_url     String   @db.VarChar(255) // URL from a service like Cloudinary
+  public_id    String   @db.VarChar(255) // The ID from Cloudinary for managing the file
+  file_type    String   @db.VarChar(50)  // e.g., 'pdf', 'docx'
   upload_date  DateTime @default(now())
   subject_code String   @db.VarChar(10)
   subject      Subject  @relation(fields: [subject_code], references: [subject_code])
