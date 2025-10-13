@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser'
 import cors from "cors";
 import authroutes from "./routes/student.routes/auth.student.routes";
 import facultyroutes from "./routes/faculty.routes/auth.faculty.routes";
+import materialRouter from './routes/faculty.routes/material.routes'
 import { ApiResponse } from "./utils/ApiResponse";
 import { ApiError } from "./utils/ApiError";
 import { Request, Response, NextFunction } from "express";
@@ -26,6 +27,7 @@ app.use(cookieParser());
 
 app.use("/api/v2/auth/student", authroutes);
 app.use("/api/v2/auth/faculty", facultyroutes)
+app.use('/api/v2/materials', materialRouter);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error("Error caught:", err);
