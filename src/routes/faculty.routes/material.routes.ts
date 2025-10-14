@@ -3,6 +3,7 @@ import { verifyUser } from "../../middlewares/auth.middleware";
 import {
   getCloudinarySignature,
   createMaterial,
+  createQuestionPaper,
 } from "../../controllers/faculty.controllers/material.controller";
 
 const router = Router();
@@ -11,6 +12,7 @@ router.use(verifyUser);
 router.route("/get-signature").get(getCloudinarySignature);
 
 // Route to create the material entry in the database
-router.route("/").post(createMaterial);
+router.route("/create-material").post(createMaterial);
+router.route("/create-pyq").post(createQuestionPaper);
 
 export default router;

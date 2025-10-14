@@ -7,7 +7,7 @@ import prisma from "../../db/prisma";
 
 /**
  * @description   Generates a signature for direct frontend uploads to Cloudinary.
- * @route         GET /api/v1/materials/get-signature
+ * @route         GET /api/v2/materials/get-signature
  * @access        Private (Faculty only)
  */
 
@@ -44,7 +44,7 @@ export const getCloudinarySignature = asyncHandler(
 
 /**
  * @description   Saves material metadata to the database after successful Cloudinary upload.
- * @route         POST /api/v1/materials
+ * @route         POST /api/v2/materials
  * @access        Private (Faculty only)
  */
 export const createMaterial = asyncHandler(
@@ -89,6 +89,78 @@ export const createMaterial = asyncHandler(
           201,
           newMaterial,
           "Material uploaded and saved successfully."
+        )
+      );
+  }
+);
+/**
+ * @description   Saves question paper metadata to the database after successful Cloudinary upload.
+ * @route         POST /api/v2/materials
+ * @access        Private (Faculty only)
+ */
+
+export const createQuestionPaper = asyncHandler(
+  async (req: Request, res: Response) => {
+    // 1. Destructure the necessary fields from the request body
+    const { title, exam_year, file_url, public_id, file_type, subject_code } =
+      req.body;
+
+    // 2. Get user details attached by the authentication middleware
+    const faculty = (req as any).user;
+    const userType = (req as any).userType;
+
+    // 3. Ensure that only a faculty member can perform this action
+    if (userType !== "faculty") {
+      throw new ApiError(
+        403,
+        "Forbidden: Only faculty can upload question papers."
+      );
+    }
+
+    // 4. Validate that all required fields from the schema are present
+    if (
+      !title ||
+      !exam_year ||
+      !file_url ||
+      !public_id ||
+      !file_type ||
+      !subject_code
+    ) {
+      throw new ApiError(
+        400,
+        "Title, exam year, file URL, public ID, file type, and subject code are all required."
+      );
+    }
+
+    // 5. Create a new record in the QuestionPaper table
+    const newQuestionPaper = await prisma.questionPaper.create({
+      data: {
+        title,
+        exam_year: parseInt(exam_year, 10), // Ensure exam_year is an integer
+        file_url,
+        public_id,
+        file_type,
+        subject_code,
+        faculty_id: faculty.id, // Link to the logged-in faculty
+      },
+    });
+
+    // 6. Handle potential database insertion failure
+    if (!newQuestionPaper) {
+      throw new ApiError(
+        500,
+        "Failed to save the question paper to the database."
+      );
+    }
+
+    // 7. Return a success response with the newly created data
+    return res
+      .status(201)
+      .json(
+        new ApiResponse(
+          201,
+          newQuestionPaper,
+          "Question paper uploaded and saved successfully."
         )
       );
   }
