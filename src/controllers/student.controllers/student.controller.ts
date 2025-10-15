@@ -83,7 +83,7 @@ const StudentLogin = asyncHandler(async (req: Request, res: Response) => {
   const { roll_number, password } = req.body;
 
   if (!roll_number || !password) {
-    throw new ApiError(400, "Roll number and password are required");
+    throw new ApiError(401, "Roll number and password are required");
   }
 
   // Find student by roll_number

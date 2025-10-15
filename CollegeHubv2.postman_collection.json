@@ -1,0 +1,1404 @@
+{
+	"info": {
+		"_postman_id": "45d880ec-c362-4700-9bf0-8edf82a249a1",
+		"name": "CollegeHubv2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40369372"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Student",
+					"item": [
+						{
+							"name": "Register-student",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"roll_number\": \"23C71A6201\",\r\n  \"name\": \"test@t.com\",\r\n  \"email\": \"rajashekarpatha262@gmail.com\",\r\n  \"password\": \"securePassword123\",\r\n  \"batch\": 2023,\r\n  \"semester\": 5,\r\n  \"branch_code\": \"CSC\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v2/auth/student/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v2",
+										"auth",
+										"student",
+										"register"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Register-student",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"roll_number\": \"23C71A6209\",\r\n  \"name\": \"TestStudent\",\r\n  \"email\": \"test.student1@clg.com\",\r\n  \"password\": \"securePassword123\",\r\n  \"batch\": 2023,\r\n  \"semester\": 5,\r\n  \"branch_code\": \"CSC\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v2/auth/student/register",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v2",
+												"auth",
+												"student",
+												"register"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:3000"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"name": "Content-Type",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "Content-Length",
+											"value": "213"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"d5-7HaQ2hObWUr6Sb0yAnegXNGMYh0\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 15 Oct 2025 09:13:04 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [
+										{
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
+										}
+									],
+									"body": "{\n    \"statusCode\": 201,\n    \"data\": {\n        \"roll_number\": \"23C71A6209\",\n        \"name\": \"TestStudent\",\n        \"email\": \"test.student1@clg.com\",\n        \"batch\": 2023,\n        \"semester\": 5,\n        \"branch_code\": \"CSC\"\n    },\n    \"message\": \"Student registered successfully!\",\n    \"success\": true\n}"
+								}
+							]
+						},
+						{
+							"name": "student-login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"roll_number\": \"23C71A6239\",\r\n  \"password\": \"securePassword123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v2/auth/student/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v2",
+										"auth",
+										"student",
+										"login"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "student-login",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"roll_number\": \"23C71A6239\",\r\n  \"password\": \"securePassword123\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v2/auth/student/login",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v2",
+												"auth",
+												"student",
+												"login"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:3000"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Set-Cookie",
+											"value": "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xsX251bWJlciI6IjIzQzcxQTYyMzkiLCJlbWFpbCI6InJhamFzaGVrYXJwYXRoYUBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6InN0dWRlbnQiLCJpYXQiOjE3NjA1MTk2MDAsImV4cCI6MTc2MDUyMDUwMH0.uedLCE8rj3V4CgWIsRTWwLwZl9i7q9mtatqDTQZ9dkM; Max-Age=604800; Path=/; Expires=Wed, 22 Oct 2025 09:13:20 GMT; HttpOnly; SameSite=Strict"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "484"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"1e4-WLGTN/BDZR3352GXNt04Vo45abk\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 15 Oct 2025 09:13:20 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"student\": {\n            \"roll_number\": \"23C71A6239\",\n            \"name\": \"Rajashekar Patha\",\n            \"email\": \"rajashekarpatha@gmail.com\",\n            \"batch\": 2023,\n            \"semester\": 5,\n            \"branch_code\": \"CSC\"\n        },\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xsX251bWJlciI6IjIzQzcxQTYyMzkiLCJlbWFpbCI6InJhamFzaGVrYXJwYXRoYUBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6InN0dWRlbnQiLCJpYXQiOjE3NjA1MTk2MDAsImV4cCI6MTc2MDUyMDUwMH0.uedLCE8rj3V4CgWIsRTWwLwZl9i7q9mtatqDTQZ9dkM\"\n    },\n    \"message\": \"Student logged in successfully!\",\n    \"success\": true\n}"
+								}
+							]
+						},
+						{
+							"name": "Me",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v2/auth/student/me",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v2",
+										"auth",
+										"student",
+										"me"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Me",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/v2/auth/student/me",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v2",
+												"auth",
+												"student",
+												"me"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:3000"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "181"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"b5-UOaZI45DIPzLekNRmiDy9G4bKYs\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 15 Oct 2025 09:14:26 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"userType\": \"student\",\n    \"user\": {\n        \"roll_number\": \"23C71A6239\",\n        \"name\": \"Rajashekar Patha\",\n        \"email\": \"rajashekarpatha@gmail.com\",\n        \"batch\": 2023,\n        \"semester\": 5,\n        \"branch_code\": \"CSC\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "logout",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v2/auth/student/logout",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v2",
+										"auth",
+										"student",
+										"logout"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "logout",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/v2/auth/student/logout",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v2",
+												"auth",
+												"student",
+												"logout"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:3000"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Set-Cookie",
+											"value": "accessToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "79"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4f-FNrDV4VxZkbuasTQDeR/2PM66gs\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 15 Oct 2025 09:15:13 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 200,\n    \"data\": {},\n    \"message\": \"Logged out successfully\",\n    \"success\": true\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Faculty",
+					"item": [
+						{
+							"name": "register-faculty",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \r\n    \"name\":\"facultyTest\",\r\n    \"email\": \"faculty2.clg@gmail.com\",\r\n    \"password\": \"securePassword123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v2/auth/faculty/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v2",
+										"auth",
+										"faculty",
+										"register"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "register-faculty",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{   \r\n    \"name\":\"facultyTest1\",\r\n    \"email\": \"faculty3.clg@gmail.com\",\r\n    \"password\": \"securePassword123\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v2/auth/faculty/register",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v2",
+												"auth",
+												"faculty",
+												"register"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:3000"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "145"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"91-hNzBNr87xeZoJVA8cVJu4qpp9XY\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 15 Oct 2025 09:15:35 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 201,\n    \"data\": {\n        \"name\": \"facultyTest1\",\n        \"email\": \"faculty3.clg@gmail.com\"\n    },\n    \"message\": \"New faculty registered successfully\",\n    \"success\": true\n}"
+								}
+							]
+						},
+						{
+							"name": "faculty-login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"faculty.clg@gmail.com\",\r\n    \"password\":\"securePassword123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v2/auth/faculty/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v2",
+										"auth",
+										"faculty",
+										"login"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "faculty-login",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\":\"faculty.clg@gmail.com\",\r\n    \"password\":\"securePassword123\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v2/auth/faculty/login",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v2",
+												"auth",
+												"faculty",
+												"login"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:3000"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Set-Cookie",
+											"value": "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmYWN1bHR5LmNsZ0BnbWFpbC5jb20iLCJpYXQiOjE3NjA1MTk3NTIsImV4cCI6MTc2MDUyMDY1Mn0.APkcZNy16kMsR25-H9lacDgnRqlawWeI770ypWhLpc4; Max-Age=604800; Path=/; Expires=Wed, 22 Oct 2025 09:15:52 GMT; HttpOnly; SameSite=Strict"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "345"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"159-p+iL41W0jwi9C5YYLeqbIGOKYKo\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 15 Oct 2025 09:15:52 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"student\": {\n            \"id\": 1,\n            \"name\": \"faculty\",\n            \"email\": \"faculty.clg@gmail.com\"\n        },\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmYWN1bHR5LmNsZ0BnbWFpbC5jb20iLCJpYXQiOjE3NjA1MTk3NTIsImV4cCI6MTc2MDUyMDY1Mn0.APkcZNy16kMsR25-H9lacDgnRqlawWeI770ypWhLpc4\"\n    },\n    \"message\": \"Faculty logged in successfully!\",\n    \"success\": true\n}"
+								}
+							]
+						},
+						{
+							"name": "me",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v2/auth/faculty/me",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v2",
+										"auth",
+										"faculty",
+										"me"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "me",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/v2/auth/faculty/me",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v2",
+												"auth",
+												"faculty",
+												"me"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:3000"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "102"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"66-nRCags9t1G3c3QIqbgn3G4Sb9hI\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 15 Oct 2025 09:16:08 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"userType\": \"faculty\",\n    \"user\": {\n        \"id\": 1,\n        \"name\": \"faculty\",\n        \"email\": \"faculty.clg@gmail.com\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "logout",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v2/auth/faculty/logout",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v2",
+										"auth",
+										"faculty",
+										"logout"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "logout",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/v2/auth/faculty/logout",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v2",
+												"auth",
+												"faculty",
+												"logout"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:3000"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Set-Cookie",
+											"value": "accessToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "79"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4f-FNrDV4VxZkbuasTQDeR/2PM66gs\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 15 Oct 2025 09:16:45 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 200,\n    \"data\": {},\n    \"message\": \"Logged out successfully\",\n    \"success\": true\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Meterials",
+			"item": [
+				{
+					"name": "Get-Sign",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"faculty.clg@gmail.com\",\r\n    \"password\":\"securePassword123\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v2/materials/get-signature",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"materials",
+								"get-signature"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get-Sign",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"faculty.clg@gmail.com\",\r\n    \"password\":\"securePassword123\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v2/materials/get-signature",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v2",
+										"materials",
+										"get-signature"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:3000"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "153"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"99-L7kigcIewrf8nWcFHTQMp8SSkAQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 15 Oct 2025 09:17:11 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"signature\": \"8dbed951c4cd821b5a0e03af5b82587d6f45132a\",\n    \"timestamp\": 1760519831,\n    \"folder\": \"collegehub_materials\",\n    \"apiKey\": \"929365264769451\"\n}"
+						}
+					]
+				},
+				{
+					"name": "All resources",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"roll_number\": \"23C71A6239\",\r\n  \"password\": \"securePassword123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v2/student/resources",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"student",
+								"resources"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "All resources",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"roll_number\": \"23C71A6239\",\r\n  \"password\": \"securePassword123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v2/student/resources",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v2",
+										"student",
+										"resources"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:3000"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "690"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2b2-Lv/90WEfxQFCAhj/kX7ObVWhJsM\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 15 Oct 2025 09:17:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"announcements\": {\n            \"items\": [\n                {\n                    \"id\": 3,\n                    \"title\": \"Special Workshop for CSE Students\",\n                    \"content\": \"A mandatory workshop on Advanced Data Structures will be held this Wednesday in Room 404.\",\n                    \"post_date\": \"2025-10-15T06:40:35.341Z\",\n                    \"faculty_id\": 1,\n                    \"target_branch_code\": \"CSC\",\n                    \"target_batch\": 2023,\n                    \"faculty\": {\n                        \"name\": \"faculty\"\n                    }\n                }\n            ],\n            \"count\": 1,\n            \"message\": \"1 announcement(s) found.\"\n        },\n        \"materials\": {\n            \"items\": [],\n            \"count\": 0,\n            \"message\": \"No study materials have been uploaded for your current semester yet.\"\n        },\n        \"questionPapers\": {\n            \"items\": [],\n            \"count\": 0,\n            \"message\": \"No previous year question papers are available for your branch yet.\"\n        }\n    },\n    \"message\": \"Student resources fetched successfully.\",\n    \"success\": true\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Announcements",
+			"item": [
+				{
+					"name": "createAnnouncement",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Special Workshop for CSE Students\",\r\n  \"content\": \"A mandatory workshop on Advanced Data Structures will be held this Wednesday in Room 404.\",\r\n  \"target_branch_code\": \"CSC\",\r\n  \"target_batch\": 2023\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v2/announcement",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"announcement"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "createAnnouncement",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"title\": \"CyberSecurity Workshop for CSC Students\",\r\n  \"content\": \"A mandatory workshop on Advanced security and pentesting will be held this Wednesday in Room 101.\",\r\n  \"target_branch_code\": \"CSC\",\r\n  \"target_batch\": 2023\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v2/announcement",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v2",
+										"announcement"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:3000"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "357"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"165-u0euy3kyoXdQ8kdohNOQvqhyCIE\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 15 Oct 2025 09:19:15 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 201,\n    \"data\": {\n        \"id\": 4,\n        \"title\": \"CyberSecurity Workshop for CSC Students\",\n        \"content\": \"A mandatory workshop on Advanced security and pentesting will be held this Wednesday in Room 101.\",\n        \"post_date\": \"2025-10-15T09:19:15.312Z\",\n        \"faculty_id\": 1,\n        \"target_branch_code\": \"CSC\",\n        \"target_batch\": 2023\n    },\n    \"message\": \"Announcement created successfully.\",\n    \"success\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "Update-announcement",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"CORRECTION: Upcoming Holiday Declaration\",\r\n  \"content\": \"Correction: The institution will be closed on Monday, not Friday. Apologies for the confusion.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v2/announcement/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"announcement",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update-announcement",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"title\": \"CORRECTION: Upcoming Holiday Declaration\",\r\n  \"content\": \"Correction: The institution will be closed on Monday, not Friday. Apologies for the confusion.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v2/announcement/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v2",
+										"announcement",
+										"3"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:3000"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "355"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"163-82WfNLhgi0icoY+XoWVhjpNP+QQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 15 Oct 2025 09:19:37 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"id\": 3,\n        \"title\": \"CORRECTION: Upcoming Holiday Declaration\",\n        \"content\": \"Correction: The institution will be closed on Monday, not Friday. Apologies for the confusion.\",\n        \"post_date\": \"2025-10-15T06:40:35.341Z\",\n        \"faculty_id\": 1,\n        \"target_branch_code\": \"CSC\",\n        \"target_batch\": 2023\n    },\n    \"message\": \"Announcement updated successfully.\",\n    \"success\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete-Announcement",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v2/announcement/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"announcement",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete-Announcement",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v2/announcement/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v2",
+										"announcement",
+										"3"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:3000"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "90"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5a-GbZXtVCcc2D9FY3JOnbHcXXUvk8\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 15 Oct 2025 09:19:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {},\n    \"message\": \"Announcement deleted successfully.\",\n    \"success\": true\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
