@@ -142,4 +142,103 @@ const StudentLogin = asyncHandler(async (req: Request, res: Response) => {
 
 
 
-export { StudentRegister, StudentLogin};
+ const getStudentResources = asyncHandler(
+  async (req: Request, res: Response) => {
+    // 1. Get the authenticated student from the request object (attached by middleware)
+    const student = (req as any).user;
+    const userType = (req as any).userType;
+
+    // 2. Validate that the user is indeed a student
+    if (userType !== "student" || !student) {
+      throw new ApiError(403, "Forbidden: This route is for students only.");
+    }
+
+    const { branch_code, batch, semester } = student;
+    
+    if (!branch_code || !batch || !semester) {
+        throw new ApiError(400, "Student profile is incomplete. Branch, batch, and semester are required.");
+    }
+
+    // 3. Fetch all three resource types in parallel for maximum efficiency
+    const [announcements, materials, questionPapers] = await Promise.all([
+      // Fetch Announcements filtered for the student
+      prisma.announcement.findMany({
+        where: {
+          OR: [
+            { target_branch_code: null, target_batch: null }, // General
+            { target_branch_code: branch_code, target_batch: null }, // Branch-specific
+            { target_branch_code: null, target_batch: batch }, // Batch-specific
+            { target_branch_code: branch_code, target_batch: batch }, // Branch and Batch specific
+          ],
+        },
+        orderBy: { post_date: "desc" },
+        include: { faculty: { select: { name: true } } },
+      }),
+
+      // Fetch Materials for the student's current semester and branch
+      prisma.material.findMany({
+        where: {
+          subject: {
+            semester: semester,
+            branches: { some: { branch_code: branch_code } },
+          },
+        },
+        orderBy: { upload_date: "desc" },
+        include: {
+          subject: { select: { subject_name: true, subject_code: true } },
+          faculty: { select: { name: true } },
+        },
+      }),
+
+      // Fetch Question Papers for all subjects in the student's branch
+      prisma.questionPaper.findMany({
+        where: {
+          subject: {
+            branches: { some: { branch_code: branch_code } },
+          },
+        },
+        orderBy: { exam_year: "desc" },
+        include: {
+          subject: { select: { subject_name: true, subject_code: true } },
+          faculty: { select: { name: true } },
+        },
+      }),
+    ]);
+
+    // 4. Build a frontend-friendly response payload with counts and messages
+    const resources = {
+      announcements: {
+        items: announcements,
+        count: announcements.length,
+        message:
+          announcements.length > 0
+            ? `${announcements.length} announcement(s) found.`
+            : "No new announcements found.",
+      },
+      materials: {
+        items: materials,
+        count: materials.length,
+        message:
+          materials.length > 0
+            ? `${materials.length} material(s) found for your semester.`
+            : "No study materials have been uploaded for your current semester yet.",
+      },
+      questionPapers: {
+        items: questionPapers,
+        count: questionPapers.length,
+        message:
+          questionPapers.length > 0
+            ? `${questionPapers.length} question paper(s) found.`
+            : "No previous year question papers are available for your branch yet.",
+      },
+    };
+
+    // 5. Send the structured response
+    return res
+      .status(200)
+      .json(new ApiResponse(200, resources, "Student resources fetched successfully."));
+  }
+);
+
+
+export { StudentRegister, StudentLogin, getStudentResources };

@@ -4,6 +4,7 @@ import prisma from './db/prisma'
 import cookieParser from 'cookie-parser'
 import cors from "cors";
 import authroutes from "./routes/student.routes/auth.student.routes";
+import resourcesrouter from "./routes/student.routes/resources.routes";
 import facultyroutes from "./routes/faculty.routes/auth.faculty.routes";
 import materialRouter from './routes/faculty.routes/material.routes';
 import AnnouncementRouter from './routes/faculty.routes/announcement.routes'
@@ -27,6 +28,7 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cookieParser());
 
 app.use("/api/v2/auth/student", authroutes);
+app.use("/api/v2/student/resources",resourcesrouter)
 app.use("/api/v2/auth/faculty", facultyroutes)
 app.use('/api/v2/materials', materialRouter);
 app.use('/api/v2/announcement', AnnouncementRouter)

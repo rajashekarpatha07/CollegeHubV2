@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express";
 import {
   StudentRegister,
   StudentLogin,
+  getStudentResources
 } from "../../controllers/student.controllers/student.controller";
 import { verifyUser } from "../../middlewares/auth.middleware";
 import { logoutUser } from "../../controllers/auth.controller";
