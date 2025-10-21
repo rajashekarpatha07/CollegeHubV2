@@ -59,6 +59,7 @@ CREATE TABLE `Material` (
     `file_type` VARCHAR(50) NOT NULL,
     `upload_date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `subject_code` VARCHAR(10) NOT NULL,
+    `semester` INTEGER NOT NULL,
     `faculty_id` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)

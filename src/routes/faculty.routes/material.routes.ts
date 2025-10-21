@@ -4,6 +4,8 @@ import {
   getCloudinarySignature,
   createMaterial,
   createQuestionPaper,
+  updateMaterial,
+  deleteMaterial
 } from "../../controllers/faculty.controllers/material.controller";
 
 const router = Router();
@@ -15,4 +17,8 @@ router.route("/get-signature").get(getCloudinarySignature);
 router.route("/create-material").post(createMaterial);
 router.route("/create-pyq").post(createQuestionPaper);
 
+// ... other routes
+router.route("/:materialId")
+    .patch(verifyUser, updateMaterial)
+    .delete(verifyUser, deleteMaterial);
 export default router;

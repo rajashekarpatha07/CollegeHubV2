@@ -2,6 +2,9 @@ import { Router, Request, Response } from "express";
 import {
   facultyregister,
   loginfaculty,
+  getMyAnnouncements,
+  getMyMaterials,
+  getMyQuestionPapers
 } from "../../controllers/faculty.controllers/faculty.controller";
 import { verifyUser } from "../../middlewares/auth.middleware";
 import { logoutUser } from "../../controllers/auth.controller";
@@ -17,5 +20,9 @@ facultyroutes.route("/me").get(verifyUser, (req: Request, res: Response) => {
     user: (req as any).user,
   });
 });
+
+facultyroutes.route("/announcements/me").get(verifyUser, getMyAnnouncements);
+facultyroutes.route("/materials/me").get(verifyUser, getMyMaterials);
+facultyroutes.route("/questionpapers/me").get(verifyUser, getMyQuestionPapers);
 facultyroutes.route("/logout").get(verifyUser, logoutUser);
 export default facultyroutes;

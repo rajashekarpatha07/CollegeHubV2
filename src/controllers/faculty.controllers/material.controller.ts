@@ -22,22 +22,25 @@ export const getCloudinarySignature = asyncHandler(
         "Forbidden: Only faculty can perform this action."
       );
     }
+
     const timestamp = Math.round(new Date().getTime() / 1000);
     const folder = "collegehub_materials";
 
+    // FIX: Use CLOUDINARY_API_SECRET instead of CLOUDINARY_API_KEY
     const signature = cloudinary.utils.api_sign_request(
       {
         timestamp: timestamp,
         folder: folder,
       },
-      process.env.CLOUDINARY_API_KEY as string
+      process.env.CLOUDINARY_API_SECRET as string // Changed from CLOUDINARY_API_KEY
     );
+
     res.status(200).json({
       success: true,
       signature,
       timestamp,
       folder,
-      apiKey: process.env.CLOUDINARY_API_KEY,
+      apiKey: process.env.CLOUDINARY_API_KEY, // This stays as API_KEY
     });
   }
 );
@@ -49,8 +52,15 @@ export const getCloudinarySignature = asyncHandler(
  */
 export const createMaterial = asyncHandler(
   async (req: Request, res: Response) => {
-    const { title, description, file_url, public_id, file_type, subject_code } =
-      req.body;
+    const {
+      title,
+      description,
+      file_url,
+      public_id,
+      file_type,
+      subject_code,
+      semester,
+    } = req.body;
 
     const faculty = (req as any).user;
     const userType = (req as any).userType;
@@ -74,6 +84,7 @@ export const createMaterial = asyncHandler(
         public_id,
         file_type,
         subject_code,
+        semester: semester,
         faculty_id: faculty.id, // Link to the logged-in faculty
       },
     });
@@ -163,5 +174,153 @@ export const createQuestionPaper = asyncHandler(
           "Question paper uploaded and saved successfully."
         )
       );
+  }
+);
+
+/**
+ * @description   Update a material's details
+ * @route         PATCH /api/v2/materials/:materialId
+ * @access        Private (Faculty only)
+ */
+export const updateMaterial = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { materialId } = req.params;
+    const { title, description, subject_code, semester } = req.body;
+    const faculty = (req as any).user;
+
+    const material = await prisma.material.findUnique({
+      where: { id: parseInt(materialId) },
+    });
+    if (!material) throw new ApiError(404, "Material not found.");
+
+    // Security check: ensure the faculty owns this material
+    if (material.faculty_id !== faculty.id) {
+      throw new ApiError(
+        403,
+        "Forbidden: You can only update your own materials."
+      );
+    }
+
+    const updatedMaterial = await prisma.material.update({
+      where: { id: parseInt(materialId) },
+      data: {
+        title,
+        description,
+        subject_code,
+        semester: parseInt(semester, 10),
+      },
+    });
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, updatedMaterial, "Material updated successfully.")
+      );
+  }
+);
+
+/**
+ * @description   Delete a material
+ * @route         DELETE /api/v2/materials/:materialId
+ * @access        Private (Faculty only)
+ */
+export const deleteMaterial = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { materialId } = req.params;
+    const faculty = (req as any).user;
+
+    const material = await prisma.material.findUnique({
+      where: { id: parseInt(materialId) },
+    });
+    if (!material) throw new ApiError(404, "Material not found.");
+
+    // Security check
+    if (material.faculty_id !== faculty.id) {
+      throw new ApiError(
+        403,
+        "Forbidden: You can only delete your own materials."
+      );
+    }
+
+    // Step 1: Delete the file from Cloudinary
+    await cloudinary.uploader.destroy(material.public_id);
+
+    // Step 2: Delete the record from the database
+    await prisma.material.delete({ where: { id: parseInt(materialId) } });
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, {}, "Material deleted successfully."));
+  }
+);
+
+export const updatequestionPaper = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { QuestionPaperId } = req.params;
+    const { title, description, subject_code, semester } = req.body;
+    const faculty = (req as any).user;
+
+    const questionpaper = await prisma.questionPaper.findUnique({
+      where: { id: parseInt(QuestionPaperId) },
+    });
+    if (!questionpaper) throw new ApiError(404, "Material not found.");
+
+    // Security check: ensure the faculty owns this material
+    if (questionpaper.faculty_id !== faculty.id) {
+      throw new ApiError(
+        403,
+        "Forbidden: You can only update your own materials."
+      );
+    }
+
+    const updatedQuestionpaper = await prisma.material.update({
+      where: { id: parseInt(QuestionPaperId) },
+      data: {
+        title,
+        description,
+        subject_code,
+        semester: parseInt(semester, 10),
+      },
+    });
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          updatedQuestionpaper,
+          "Material updated successfully."
+        )
+      );
+  }
+);
+
+export const deleteQuestionPaper = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { QuestionPaperId } = req.params;
+    const faculty = (req as any).user;
+
+    const questionpaper = await prisma.questionPaper.findUnique({
+      where: { id: parseInt(QuestionPaperId) },
+    });
+    if (!questionpaper) throw new ApiError(404, "Material not found.");
+
+    // Security check
+    if (questionpaper.faculty_id !== faculty.id) {
+      throw new ApiError(
+        403,
+        "Forbidden: You can only delete your own materials."
+      );
+    }
+
+    // Step 1: Delete the file from Cloudinary
+    await cloudinary.uploader.destroy(questionpaper.public_id);
+
+    // Step 2: Delete the record from the database
+    await prisma.material.delete({ where: { id: parseInt(QuestionPaperId) } });
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, {}, "Material deleted successfully."));
   }
 );

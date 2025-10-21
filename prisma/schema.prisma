@@ -79,6 +79,7 @@ model Material {
   file_type    String   @db.VarChar(50)  // e.g., 'image', 'pdf', 'video'
   upload_date  DateTime @default(now())
   subject_code String   @db.VarChar(10)
+  semester     Int      
   subject      Subject  @relation(fields: [subject_code], references: [subject_code])
   faculty_id   Int
   faculty      Faculty  @relation(fields: [faculty_id], references: [id])

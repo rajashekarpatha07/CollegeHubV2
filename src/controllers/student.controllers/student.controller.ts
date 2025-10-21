@@ -140,11 +140,9 @@ const StudentLogin = asyncHandler(async (req: Request, res: Response) => {
   );
 });
 
-
-
- const getStudentResources = asyncHandler(
+const getStudentResources = asyncHandler(
   async (req: Request, res: Response) => {
-    // 1. Get the authenticated student from the request object (attached by middleware)
+    // 1. Get the authenticated student from the request object
     const student = (req as any).user;
     const userType = (req as any).userType;
 
@@ -154,21 +152,24 @@ const StudentLogin = asyncHandler(async (req: Request, res: Response) => {
     }
 
     const { branch_code, batch, semester } = student;
-    
+
     if (!branch_code || !batch || !semester) {
-        throw new ApiError(400, "Student profile is incomplete. Branch, batch, and semester are required.");
+      throw new ApiError(
+        400,
+        "Student profile is incomplete. Branch, batch, and semester are required."
+      );
     }
 
-    // 3. Fetch all three resource types in parallel for maximum efficiency
+    // 3. Fetch all three resource types in parallel
     const [announcements, materials, questionPapers] = await Promise.all([
-      // Fetch Announcements filtered for the student
+      // Fetch Announcements (This query is correct, no changes needed)
       prisma.announcement.findMany({
         where: {
           OR: [
-            { target_branch_code: null, target_batch: null }, // General
-            { target_branch_code: branch_code, target_batch: null }, // Branch-specific
-            { target_branch_code: null, target_batch: batch }, // Batch-specific
-            { target_branch_code: branch_code, target_batch: batch }, // Branch and Batch specific
+            { target_branch_code: null, target_batch: null },
+            { target_branch_code: branch_code, target_batch: null },
+            { target_branch_code: null, target_batch: batch },
+            { target_branch_code: branch_code, target_batch: batch },
           ],
         },
         orderBy: { post_date: "desc" },
@@ -176,11 +177,12 @@ const StudentLogin = asyncHandler(async (req: Request, res: Response) => {
       }),
 
       // Fetch Materials for the student's current semester and branch
+      
       prisma.material.findMany({
         where: {
+          semester: semester, // <-- Filter by semester on the Material model
           subject: {
-            semester: semester,
-            branches: { some: { branch_code: branch_code } },
+            branches: { some: { branch_code: branch_code } }, // <-- Still filter by branch on the related Subject
           },
         },
         orderBy: { upload_date: "desc" },
@@ -190,7 +192,7 @@ const StudentLogin = asyncHandler(async (req: Request, res: Response) => {
         },
       }),
 
-      // Fetch Question Papers for all subjects in the student's branch
+      // Fetch Question Papers (This query is correct, no changes needed)
       prisma.questionPaper.findMany({
         where: {
           subject: {
@@ -205,7 +207,7 @@ const StudentLogin = asyncHandler(async (req: Request, res: Response) => {
       }),
     ]);
 
-    // 4. Build a frontend-friendly response payload with counts and messages
+    // 4. Build a frontend-friendly response payload
     const resources = {
       announcements: {
         items: announcements,
@@ -236,9 +238,14 @@ const StudentLogin = asyncHandler(async (req: Request, res: Response) => {
     // 5. Send the structured response
     return res
       .status(200)
-      .json(new ApiResponse(200, resources, "Student resources fetched successfully."));
+      .json(
+        new ApiResponse(
+          200,
+          resources,
+          "Student resources fetched successfully."
+        )
+      );
   }
 );
-
 
 export { StudentRegister, StudentLogin, getStudentResources };

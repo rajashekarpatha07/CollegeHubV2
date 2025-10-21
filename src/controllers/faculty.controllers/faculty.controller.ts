@@ -91,4 +91,71 @@ const loginfaculty = asyncHandler(async (req: Request, res: Response) => {
   );
 });
 
-export { facultyregister, loginfaculty };
+const getMyAnnouncements = asyncHandler(async (req: Request, res: Response) => {
+  const faculty = (req as any).user;
+  const userType = (req as any).userType;
+
+  if (userType !== "faculty") {
+    throw new ApiError(403, "Forbidden: This route is for faculty only.");
+  }
+
+  const announcements = await prisma.announcement.findMany({
+    where: {
+      faculty_id: faculty.id,
+    },
+    orderBy: {
+      post_date: "desc",
+    },
+  });
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, announcements, "Announcements fetched successfully.")
+    );
+});
+
+const getMyMaterials = asyncHandler(async (req: Request, res: Response) => {
+  const faculty = (req as any).user;
+  const userType = (req as any).userType;
+
+  if (userType !== "faculty") {
+    throw new ApiError(403, "Forbidden: This route is for faculty only.");
+  }
+
+  const materials = await prisma.material.findMany({
+    where: {
+      faculty_id: faculty.id,
+    },
+    orderBy: {
+      upload_date: "desc",
+    },
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, materials, "Materials fetched successfully."));
+});
+
+const getMyQuestionPapers = asyncHandler(async (req: Request, res: Response) => {
+  const faculty = (req as any).user;
+  const userType = (req as any).userType;
+
+  if (userType !== 'faculty') {
+    throw new ApiError(403, "Forbidden: This route is for faculty only.");
+  }
+
+  const papers = await prisma.questionPaper.findMany({
+    where: {
+      faculty_id: faculty.id,
+    },
+    orderBy: {
+      upload_date: 'desc',
+    },
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, papers, "Question papers fetched successfully."));
+});
+export { facultyregister, loginfaculty, getMyAnnouncements, getMyMaterials, getMyQuestionPapers };
