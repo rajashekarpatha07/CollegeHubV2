@@ -4,6 +4,7 @@ import cloudinary from "../../config/cloudinary";
 import { ApiResponse } from "../../utils/ApiResponse";
 import { asyncHandler } from "../../utils/AsyncHandler";
 import prisma from "../../db/prisma";
+import { clearAllStudentResourceCaches, clearFacultyCache } from "../../utils/cache.util";
 
 /**
  * @description   Generates a signature for direct frontend uploads to Cloudinary.
@@ -93,6 +94,9 @@ export const createMaterial = asyncHandler(
       throw new ApiError(500, "Failed to save the material to the database.");
     }
 
+    await clearAllStudentResourceCaches();
+    await clearFacultyCache(faculty.id, "announcements"); 
+
     return res
       .status(201)
       .json(
@@ -164,6 +168,9 @@ export const createQuestionPaper = asyncHandler(
       );
     }
 
+    await clearAllStudentResourceCaches();
+    await clearFacultyCache(faculty.id, "announcements"); 
+
     // 7. Return a success response with the newly created data
     return res
       .status(201)
@@ -211,6 +218,10 @@ export const updateMaterial = asyncHandler(
       },
     });
 
+    await clearAllStudentResourceCaches();
+    await clearFacultyCache(faculty.id, "announcements"); 
+
+
     return res
       .status(200)
       .json(
@@ -248,6 +259,10 @@ export const deleteMaterial = asyncHandler(
     // Step 2: Delete the record from the database
     await prisma.material.delete({ where: { id: parseInt(materialId) } });
 
+    await clearAllStudentResourceCaches();
+    await clearFacultyCache(faculty.id, "announcements"); 
+
+
     return res
       .status(200)
       .json(new ApiResponse(200, {}, "Material deleted successfully."));
@@ -282,6 +297,11 @@ export const updatequestionPaper = asyncHandler(
         semester: parseInt(semester, 10),
       },
     });
+
+    await clearAllStudentResourceCaches();
+    await clearFacultyCache(faculty.id, "announcements"); 
+
+
 
     return res
       .status(200)
@@ -318,6 +338,9 @@ export const deleteQuestionPaper = asyncHandler(
 
     // Step 2: Delete the record from the database
     await prisma.material.delete({ where: { id: parseInt(QuestionPaperId) } });
+
+    await clearAllStudentResourceCaches()
+    await clearFacultyCache(faculty.id, "announcements"); 
 
     return res
       .status(200)

@@ -8,6 +8,7 @@ import {
   hashpassword,
   verifypassword,
 } from "../../utils/auth.util/auth.util";
+import redis from "../../config/redis";
 
 /**
  * @route POST /api/v1/students/register
@@ -142,11 +143,11 @@ const StudentLogin = asyncHandler(async (req: Request, res: Response) => {
 
 const getStudentResources = asyncHandler(
   async (req: Request, res: Response) => {
-    // 1. Get the authenticated student from the request object
+    // 1. Get the authenticated student
     const student = (req as any).user;
     const userType = (req as any).userType;
 
-    // 2. Validate that the user is indeed a student
+    // 2. Validate user
     if (userType !== "student" || !student) {
       throw new ApiError(403, "Forbidden: This route is for students only.");
     }
@@ -160,9 +161,36 @@ const getStudentResources = asyncHandler(
       );
     }
 
-    // 3. Fetch all three resource types in parallel
+    // --- CACHE LOGIC (READ) ---
+    // 1. DEFINE a unique cache key
+    const cacheKey = `resources:${branch_code}:${batch}:${semester}`;
+
+    try {
+      // 2. CHECK THE CACHE
+      const cachedResources = await redis.get(cacheKey);
+
+      if (cachedResources) {
+        // 3. CACHE HIT: Parse and return
+        const resources = JSON.parse(cachedResources);
+        return res
+          .status(200)
+          .json(
+            new ApiResponse(
+              200,
+              resources,
+              "Student resources fetched successfully (from cache)."
+            )
+          );
+      }
+    } catch (error) {
+      console.error("Redis cache read error:", error);
+      // Don't throw, just fall back to DB
+    }
+    // --- END OF CACHE READ ---
+
+    // 4. CACHE MISS: Fetch from database
     const [announcements, materials, questionPapers] = await Promise.all([
-      // Fetch Announcements (This query is correct, no changes needed)
+      // Fetch Announcements
       prisma.announcement.findMany({
         where: {
           OR: [
@@ -176,13 +204,12 @@ const getStudentResources = asyncHandler(
         include: { faculty: { select: { name: true } } },
       }),
 
-      // Fetch Materials for the student's current semester and branch
-      
+      // Fetch Materials
       prisma.material.findMany({
         where: {
-          semester: semester, // <-- Filter by semester on the Material model
+          semester: semester,
           subject: {
-            branches: { some: { branch_code: branch_code } }, // <-- Still filter by branch on the related Subject
+            branches: { some: { branch_code: branch_code } },
           },
         },
         orderBy: { upload_date: "desc" },
@@ -192,7 +219,7 @@ const getStudentResources = asyncHandler(
         },
       }),
 
-      // Fetch Question Papers (This query is correct, no changes needed)
+      // Fetch Question Papers
       prisma.questionPaper.findMany({
         where: {
           subject: {
@@ -207,7 +234,7 @@ const getStudentResources = asyncHandler(
       }),
     ]);
 
-    // 4. Build a frontend-friendly response payload
+    // 5. Build response payload
     const resources = {
       announcements: {
         items: announcements,
@@ -235,14 +262,29 @@ const getStudentResources = asyncHandler(
       },
     };
 
-    // 5. Send the structured response
+    // --- CACHE LOGIC (WRITE) ---
+    try {
+      // 6. SAVE TO CACHE with 1-hour expiration
+      await redis.set(
+        cacheKey,
+        JSON.stringify(resources),
+        "EX",
+        400000 // 1 day
+      );
+    } catch (error) {
+      console.error("Redis cache write error:", error);
+      // Don't throw, just log and send response
+    }
+    // --- END OF CACHE WRITE ---
+
+    // 7. Send the structured response from DB
     return res
       .status(200)
       .json(
         new ApiResponse(
           200,
           resources,
-          "Student resources fetched successfully."
+          "Student resources fetched successfully (from database)."
         )
       );
   }

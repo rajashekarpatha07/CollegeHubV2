@@ -3,6 +3,8 @@ import { asyncHandler } from "../../utils/AsyncHandler";
 import { ApiError } from "../../utils/ApiError";
 import { ApiResponse } from "../../utils/ApiResponse";
 import prisma from "../../db/prisma";
+import { clearAllStudentResourceCaches, clearFacultyCache } from "../../utils/cache.util";
+
 
 /**
  * @description   used to create a announcement and save indb
@@ -36,6 +38,9 @@ export const createAnnouncement = asyncHandler(
         faculty_id: faculty.id, // Link to the logged-in faculty
       },
     });
+  
+    await clearAllStudentResourceCaches();
+    await clearFacultyCache(faculty.id, "announcements"); 
 
     return res
       .status(201)
@@ -101,6 +106,9 @@ export const updateAnnouncement = asyncHandler(
       },
     });
 
+    await clearAllStudentResourceCaches();
+    await clearFacultyCache(faculty.id, "announcements"); 
+
     return res
       .status(200)
       .json(
@@ -157,6 +165,9 @@ export const deleteAnnouncement = asyncHandler(
         id: parseInt(announcementId),
       },
     });
+
+    await clearAllStudentResourceCaches();
+    await clearFacultyCache(faculty.id, "announcements"); 
 
     return res
       .status(200)

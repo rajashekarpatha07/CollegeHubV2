@@ -8,6 +8,7 @@ import {
   hashpassword,
   verifypassword,
 } from "../../utils/auth.util/auth.util";
+import redis from "../../config/redis";
 
 const facultyregister = asyncHandler(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
@@ -99,6 +100,28 @@ const getMyAnnouncements = asyncHandler(async (req: Request, res: Response) => {
     throw new ApiError(403, "Forbidden: This route is for faculty only.");
   }
 
+  // 1. Define cache key specific to this faculty
+  const cacheKey = `faculty:${faculty.id}:announcements`;
+
+  try {
+    // 2. Check cache
+    const cachedData = await redis.get(cacheKey);
+    if (cachedData) {
+      return res
+        .status(200)
+        .json(
+          new ApiResponse(
+            200,
+            JSON.parse(cachedData),
+            "Announcements fetched successfully (from cache)."
+          )
+        );
+    }
+  } catch (error) {
+    console.error(`Redis cache read error for ${cacheKey}:`, error);
+  }
+
+  // 3. CACHE MISS: Fetch from DB
   const announcements = await prisma.announcement.findMany({
     where: {
       faculty_id: faculty.id,
@@ -108,10 +131,26 @@ const getMyAnnouncements = asyncHandler(async (req: Request, res: Response) => {
     },
   });
 
+  try {
+    // 4. Save to cache (e.g., for 1 hour)
+    await redis.set(
+      cacheKey,
+      JSON.stringify(announcements),
+      "EX",
+      3600
+    );
+  } catch (error) {
+    console.error(`Redis cache write error for ${cacheKey}:`, error);
+  }
+
   return res
     .status(200)
     .json(
-      new ApiResponse(200, announcements, "Announcements fetched successfully.")
+      new ApiResponse(
+        200,
+        announcements,
+        "Announcements fetched successfully (from database)."
+      )
     );
 });
 
@@ -123,6 +162,28 @@ const getMyMaterials = asyncHandler(async (req: Request, res: Response) => {
     throw new ApiError(403, "Forbidden: This route is for faculty only.");
   }
 
+  // 1. Define cache key
+  const cacheKey = `faculty:${faculty.id}:materials`;
+
+  try {
+    // 2. Check cache
+    const cachedData = await redis.get(cacheKey);
+    if (cachedData) {
+      return res
+        .status(200)
+        .json(
+          new ApiResponse(
+            200,
+            JSON.parse(cachedData),
+            "Materials fetched successfully (from cache)."
+          )
+        );
+    }
+  } catch (error) {
+    console.error(`Redis cache read error for ${cacheKey}:`, error);
+  }
+
+  // 3. CACHE MISS: Fetch from DB
   const materials = await prisma.material.findMany({
     where: {
       faculty_id: faculty.id,
@@ -132,30 +193,88 @@ const getMyMaterials = asyncHandler(async (req: Request, res: Response) => {
     },
   });
 
-  return res
-    .status(200)
-    .json(new ApiResponse(200, materials, "Materials fetched successfully."));
-});
-
-const getMyQuestionPapers = asyncHandler(async (req: Request, res: Response) => {
-  const faculty = (req as any).user;
-  const userType = (req as any).userType;
-
-  if (userType !== 'faculty') {
-    throw new ApiError(403, "Forbidden: This route is for faculty only.");
+  try {
+    // 4. Save to cache
+    await redis.set(cacheKey, JSON.stringify(materials), "EX", 3600);
+  } catch (error) {
+    console.error(`Redis cache write error for ${cacheKey}:`, error);
   }
 
-  const papers = await prisma.questionPaper.findMany({
-    where: {
-      faculty_id: faculty.id,
-    },
-    orderBy: {
-      upload_date: 'desc',
-    },
-  });
-
   return res
     .status(200)
-    .json(new ApiResponse(200, papers, "Question papers fetched successfully."));
+    .json(
+      new ApiResponse(
+        200,
+        materials,
+        "Materials fetched successfully (from database)."
+      )
+    );
 });
-export { facultyregister, loginfaculty, getMyAnnouncements, getMyMaterials, getMyQuestionPapers };
+
+const getMyQuestionPapers = asyncHandler(
+  async (req: Request, res: Response) => {
+    const faculty = (req as any).user;
+    const userType = (req as any).userType;
+
+    if (userType !== "faculty") {
+      throw new ApiError(403, "Forbidden: This route is for faculty only.");
+    }
+
+    // 1. Define cache key
+    const cacheKey = `faculty:${faculty.id}:questionPapers`;
+
+    try {
+      // 2. Check cache
+      const cachedData = await redis.get(cacheKey);
+      if (cachedData) {
+        return res
+          .status(200)
+          .json(
+            new ApiResponse(
+              200,
+              JSON.parse(cachedData),
+              "Question papers fetched successfully (from cache)."
+            )
+          );
+      }
+    } catch (error)
+    {
+      console.error(`Redis cache read error for ${cacheKey}:`, error);
+    }
+
+    // 3. CACHE MISS: Fetch from DB
+    const papers = await prisma.questionPaper.findMany({
+      where: {
+        faculty_id: faculty.id,
+      },
+      orderBy: {
+        upload_date: "desc", // Note: Your schema might have exam_year here
+      },
+    });
+
+    try {
+      // 4. Save to cache
+      await redis.set(cacheKey, JSON.stringify(papers), "EX", 3600);
+    } catch (error) {
+      console.error(`Redis cache write error for ${cacheKey}:`, error);
+    }
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          papers,
+          "Question papers fetched successfully (from database)."
+        )
+      );
+  }
+);
+
+export {
+  facultyregister,
+  loginfaculty,
+  getMyAnnouncements,
+  getMyMaterials,
+  getMyQuestionPapers,
+};
