@@ -6,9 +6,12 @@
   "type": "commonjs",
   "scripts": {
     "dev": "prisma generate && nodemon src/index.ts",
-    "build": "pnpm i && tsc",
+    "build": "pnpm install && npx prisma generate && tsc",
     "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "20.x"
   },
   "keywords": [],
   "author": "",
