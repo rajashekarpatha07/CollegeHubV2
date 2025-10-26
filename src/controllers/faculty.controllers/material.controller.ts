@@ -218,8 +218,8 @@ export const updateMaterial = asyncHandler(
       },
     });
 
-    await clearAllStudentResourceCaches();
     await clearFacultyCache(faculty.id, "announcements"); 
+    await clearAllStudentResourceCaches();
 
 
     return res
@@ -259,8 +259,8 @@ export const deleteMaterial = asyncHandler(
     // Step 2: Delete the record from the database
     await prisma.material.delete({ where: { id: parseInt(materialId) } });
 
-    await clearAllStudentResourceCaches();
     await clearFacultyCache(faculty.id, "announcements"); 
+    await clearAllStudentResourceCaches();
 
 
     return res
@@ -298,10 +298,8 @@ export const updatequestionPaper = asyncHandler(
       },
     });
 
-    await clearAllStudentResourceCaches();
     await clearFacultyCache(faculty.id, "announcements"); 
-
-
+    await clearAllStudentResourceCaches();
 
     return res
       .status(200)
@@ -339,8 +337,8 @@ export const deleteQuestionPaper = asyncHandler(
     // Step 2: Delete the record from the database
     await prisma.material.delete({ where: { id: parseInt(QuestionPaperId) } });
 
-    await clearAllStudentResourceCaches()
     await clearFacultyCache(faculty.id, "announcements"); 
+    await clearAllStudentResourceCaches()
 
     return res
       .status(200)

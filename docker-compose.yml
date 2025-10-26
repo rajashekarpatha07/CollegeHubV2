@@ -1,0 +1,14 @@
+version: '3.8'
+
+# This file will build and run your backend container
+services:
+  backend:
+    build:
+      context: .  # Tells Docker to build using the Dockerfile in this same directory
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"  # Maps your local port 8080 to the container's port 8080
+    env_file:
+      - ./.env       # Tells Docker Compose to load your existing .env file
+    container_name: collegehub-backend
+

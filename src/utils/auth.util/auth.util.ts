@@ -1,5 +1,5 @@
-import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import bcrypt from 'bcryptjs';
 
 const AccessTokenSecret = process.env.ACCESS_TOKEN_SECRET as string;
 const RefreshTokenSecret = process.env.REFRESH_TOKEN_SECRET as string;
