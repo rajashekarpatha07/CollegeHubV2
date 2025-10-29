@@ -1,65 +1,33 @@
-import express from "express";
 import dotenv from "dotenv";
-import prisma from './db/prisma'
-import cookieParser from 'cookie-parser'
-import cors from "cors";
-import authroutes from "./routes/student.routes/auth.student.routes";
-import resourcesrouter from "./routes/student.routes/resources.routes";
-import facultyroutes from "./routes/faculty.routes/auth.faculty.routes";
-import materialRouter from './routes/faculty.routes/material.routes';
-import AnnouncementRouter from './routes/faculty.routes/announcement.routes'
-import { ApiResponse } from "./utils/ApiResponse";
-import { ApiError } from "./utils/ApiError";
-import { Request, Response, NextFunction } from "express";
+import prisma from './db/prisma';
+import { app } from './app' // <-- Import the configured app
 
-dotenv.config();
-const app = express();
-const PORT = process.env.SERVERPORT || 3000;
-
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN,
-    credentials: true,
-  })
-);
-
-app.use(express.json({ limit: "16kb" }));
-app.use(express.urlencoded({ extended: true, limit: "16kb" }));
-app.use(cookieParser());
-
-app.use("/api/v2/auth/student", authroutes);
-app.use("/api/v2/student/resources",resourcesrouter)
-app.use("/api/v2/auth/faculty", facultyroutes)
-app.use('/api/v2/materials', materialRouter);
-app.use('/api/v2/announcement', AnnouncementRouter)
-
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  console.error("Error caught:", err);
-
-  if (err instanceof ApiError) {
-    return res
-      .status(err.statusCode)
-      .json(new ApiResponse(err.statusCode, err.data, err.message));
-  }
-
-  return res
-    .status(500)
-    .json(new ApiResponse(500, null, "Internal Server Error"));
+// --- Load Environment Variables ---
+// This should be at the very top
+dotenv.config({
+  path: './.env' // Explicitly point to your .env file
 });
 
-const startserver = async () => {
+const PORT = process.env.SERVERPORT || 8000; // Add a fallback port
+
+// --- Server Startup Function ---
+const startServer = async () => {
   try {
+    // 1. Connect to the database
     await prisma.$connect();
     console.log("Database connected successfully!");
 
+    // 2. Start the web server
     app.listen(PORT, () => {
       console.log(`Server is running on http://localhost:${PORT}`);
     });
+    
   } catch (error) {
-    console.log("Error in connecting to Database!");
+    console.log("Error starting server or connecting to Database!");
     console.log(error);
     process.exit(1);
   }
 };
 
-startserver();
+// --- Execute Server Start ---
+startServer();
