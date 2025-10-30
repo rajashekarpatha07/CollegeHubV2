@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "45d880ec-c362-4700-9bf0-8edf82a249a1",
 		"name": "CollegeHubv2",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "40369372"
 	},
 	"item": [
@@ -19,28 +19,14 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"roll_number\": \"23C71A6201\",\r\n  \"name\": \"test@t.com\",\r\n  \"email\": \"rajashekarpatha262@gmail.com\",\r\n  \"password\": \"securePassword123\",\r\n  \"batch\": 2023,\r\n  \"semester\": 5,\r\n  \"branch_code\": \"CSC\"\r\n}",
+									"raw": "{\r\n  \"roll_number\": \"23C71A6209\",\r\n  \"name\": \"TestStudent\",\r\n  \"email\": \"test.student1@clg.com\",\r\n  \"password\": \"securePassword123\",\r\n  \"batch\": 2023,\r\n  \"semester\": 5,\r\n  \"branch_code\": \"CSC\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": {
-									"raw": "http://localhost:8080/api/v2/auth/student/register",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"v2",
-										"auth",
-										"student",
-										"register"
-									]
-								}
+								"url": "http://localhost:8080/api/v2/auth/student/register"
 							},
 							"response": [
 								{
@@ -57,21 +43,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "http://localhost:8080/api/v2/auth/student/register",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "8080",
-											"path": [
-												"api",
-												"v2",
-												"auth",
-												"student",
-												"register"
-											]
-										}
+										"url": "http://localhost:8080/api/v2/auth/student/register"
 									},
 									"status": "Created",
 									"code": 201,
@@ -96,7 +68,6 @@
 										{
 											"key": "Content-Type",
 											"value": "application/json",
-											"name": "Content-Type",
 											"description": "",
 											"type": "text"
 										},
@@ -139,28 +110,14 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"roll_number\": \"23C71A6239\",\r\n  \"password\": \"securePassword123\"\r\n}",
+									"raw": "{\r\n  \"roll_number\": \"23C71A6239\",\r\n  \"password\": \"123456\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": {
-									"raw": "http://localhost:8080/api/v2/auth/student/login",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"v2",
-										"auth",
-										"student",
-										"login"
-									]
-								}
+								"url": "http://localhost:8080/api/v2/auth/student/login"
 							},
 							"response": [
 								{
@@ -177,25 +134,11 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "http://localhost:8080/api/v2/auth/student/login",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "8080",
-											"path": [
-												"api",
-												"v2",
-												"auth",
-												"student",
-												"login"
-											]
-										}
+										"url": "http://localhost:8080/api/v2/auth/student/login"
 									},
 									"status": "OK",
 									"code": 200,
-									"_postman_previewlanguage": "",
+									"_postman_previewlanguage": null,
 									"header": [
 										{
 											"key": "X-Powered-By",
@@ -252,21 +195,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://localhost:8080/api/v2/auth/student/me",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"v2",
-										"auth",
-										"student",
-										"me"
-									]
-								}
+								"url": "http://localhost:8080/api/v2/auth/student/me"
 							},
 							"response": [
 								{
@@ -274,25 +203,11 @@
 									"originalRequest": {
 										"method": "GET",
 										"header": [],
-										"url": {
-											"raw": "http://localhost:8080/api/v2/auth/student/me",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "8080",
-											"path": [
-												"api",
-												"v2",
-												"auth",
-												"student",
-												"me"
-											]
-										}
+										"url": "http://localhost:8080/api/v2/auth/student/me"
 									},
 									"status": "OK",
 									"code": 200,
-									"_postman_previewlanguage": "",
+									"_postman_previewlanguage": null,
 									"header": [
 										{
 											"key": "X-Powered-By",
@@ -345,21 +260,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://localhost:8080/api/v2/auth/student/logout",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"v2",
-										"auth",
-										"student",
-										"logout"
-									]
-								}
+								"url": "http://localhost:8080/api/v2/auth/student/logout"
 							},
 							"response": [
 								{
@@ -367,25 +268,11 @@
 									"originalRequest": {
 										"method": "GET",
 										"header": [],
-										"url": {
-											"raw": "http://localhost:8080/api/v2/auth/student/logout",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "8080",
-											"path": [
-												"api",
-												"v2",
-												"auth",
-												"student",
-												"logout"
-											]
-										}
+										"url": "http://localhost:8080/api/v2/auth/student/logout"
 									},
 									"status": "OK",
 									"code": 200,
-									"_postman_previewlanguage": "",
+									"_postman_previewlanguage": null,
 									"header": [
 										{
 											"key": "X-Powered-By",
@@ -456,21 +343,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "http://localhost:8080/api/v2/auth/faculty/register",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"v2",
-										"auth",
-										"faculty",
-										"register"
-									]
-								}
+								"url": "http://localhost:8080/api/v2/auth/faculty/register"
 							},
 							"response": [
 								{
@@ -487,25 +360,11 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "http://localhost:8080/api/v2/auth/faculty/register",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "8080",
-											"path": [
-												"api",
-												"v2",
-												"auth",
-												"faculty",
-												"register"
-											]
-										}
+										"url": "http://localhost:8080/api/v2/auth/faculty/register"
 									},
 									"status": "Created",
 									"code": 201,
-									"_postman_previewlanguage": "",
+									"_postman_previewlanguage": null,
 									"header": [
 										{
 											"key": "X-Powered-By",
@@ -560,28 +419,14 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\":\"faculty.clg@gmail.com\",\r\n    \"password\":\"securePassword123\"\r\n}",
+									"raw": "{\r\n    \"email\":\"faculty3.clg@gmail.com\",\r\n    \"password\":\"securePassword123\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": {
-									"raw": "http://localhost:8080/api/v2/auth/faculty/login",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"v2",
-										"auth",
-										"faculty",
-										"login"
-									]
-								}
+								"url": "http://localhost:8080/api/v2/auth/faculty/login"
 							},
 							"response": [
 								{
@@ -598,25 +443,11 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "http://localhost:8080/api/v2/auth/faculty/login",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "8080",
-											"path": [
-												"api",
-												"v2",
-												"auth",
-												"faculty",
-												"login"
-											]
-										}
+										"url": "http://localhost:8080/api/v2/auth/faculty/login"
 									},
 									"status": "OK",
 									"code": 200,
-									"_postman_previewlanguage": "",
+									"_postman_previewlanguage": null,
 									"header": [
 										{
 											"key": "X-Powered-By",
@@ -673,21 +504,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://localhost:8080/api/v2/auth/faculty/me",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"v2",
-										"auth",
-										"faculty",
-										"me"
-									]
-								}
+								"url": "http://localhost:8080/api/v2/auth/faculty/me"
 							},
 							"response": [
 								{
@@ -695,25 +512,11 @@
 									"originalRequest": {
 										"method": "GET",
 										"header": [],
-										"url": {
-											"raw": "http://localhost:8080/api/v2/auth/faculty/me",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "8080",
-											"path": [
-												"api",
-												"v2",
-												"auth",
-												"faculty",
-												"me"
-											]
-										}
+										"url": "http://localhost:8080/api/v2/auth/faculty/me"
 									},
 									"status": "OK",
 									"code": 200,
-									"_postman_previewlanguage": "",
+									"_postman_previewlanguage": null,
 									"header": [
 										{
 											"key": "X-Powered-By",
@@ -766,21 +569,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://localhost:8080/api/v2/auth/faculty/logout",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"v2",
-										"auth",
-										"faculty",
-										"logout"
-									]
-								}
+								"url": "http://localhost:8080/api/v2/auth/faculty/logout"
 							},
 							"response": [
 								{
@@ -788,25 +577,11 @@
 									"originalRequest": {
 										"method": "GET",
 										"header": [],
-										"url": {
-											"raw": "http://localhost:8080/api/v2/auth/faculty/logout",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "8080",
-											"path": [
-												"api",
-												"v2",
-												"auth",
-												"faculty",
-												"logout"
-											]
-										}
+										"url": "http://localhost:8080/api/v2/auth/faculty/logout"
 									},
 									"status": "OK",
 									"code": 200,
-									"_postman_previewlanguage": "",
+									"_postman_previewlanguage": null,
 									"header": [
 										{
 											"key": "X-Powered-By",
@@ -857,6 +632,220 @@
 									"body": "{\n    \"statusCode\": 200,\n    \"data\": {},\n    \"message\": \"Logged out successfully\",\n    \"success\": true\n}"
 								}
 							]
+						},
+						{
+							"name": "Fetch faculty announcements",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8080/api/v2/auth/faculty/announcements/me"
+							},
+							"response": [
+								{
+									"name": "faculty Announcement response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "http://localhost:8080/api/v2/auth/faculty/announcements/me"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "https://collegehub-frontend.onrender.com/"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "Content-Length",
+											"value": "377"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"179-JcErVES5pM2l6ZEEvk2Bq8FpE3I\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 30 Oct 2025 08:38:56 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [
+										{
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
+										}
+									],
+									"body": "{\n    \"statusCode\": 200,\n    \"data\": [\n        {\n            \"id\": 30001,\n            \"title\": \"CyberSecurity Workshop for CSC Students\",\n            \"content\": \"A mandatory workshop on Advanced security and pentesting will be held this Wednesday in Room 101.\",\n            \"post_date\": \"2025-10-24T14:27:00.318Z\",\n            \"faculty_id\": 1,\n            \"target_branch_code\": \"CSC\",\n            \"target_batch\": 2023\n        }\n    ],\n    \"message\": \"Announcements fetched successfully (from cache).\",\n    \"success\": true\n}"
+								}
+							]
+						},
+						{
+							"name": "Fetch Faculty Materials",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8080/api/v2/auth/faculty/materials/me"
+							},
+							"response": [
+								{
+									"name": "Fetch Faculty Materials Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "http://localhost:8080/api/v2/auth/faculty/materials/me"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "https://collegehub-frontend.onrender.com/"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"name": "Content-Type",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "Content-Length",
+											"value": "100"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"64-D95WbO7Qgcx2wB/OWLWX9QxRLiY\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 30 Oct 2025 08:45:50 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 200,\n    \"data\": [],\n    \"message\": \"Materials fetched successfully (from cache).\",\n    \"success\": true\n}"
+								}
+							]
+						},
+						{
+							"name": "Fetch Faclty Question Papers",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8080/api/v2/auth/faculty/questionpapers/me"
+							},
+							"response": [
+								{
+									"name": "Fetch Faclty Question Papers response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "http://localhost:8080/api/v2/auth/faculty/questionpapers/me"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "https://collegehub-frontend.onrender.com/"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "Content-Length",
+											"value": "109"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"6d-ZEGyYRCG3iukl+HsbkesJkFpMYI\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 30 Oct 2025 08:48:32 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [
+										{
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
+										}
+									],
+									"body": "{\n    \"statusCode\": 200,\n    \"data\": [],\n    \"message\": \"Question papers fetched successfully (from database).\",\n    \"success\": true\n}"
+								}
+							]
 						}
 					]
 				}
@@ -877,20 +866,7 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"email\":\"faculty.clg@gmail.com\",\r\n    \"password\":\"securePassword123\"\r\n}"
 						},
-						"url": {
-							"raw": "http://localhost:8080/api/v2/materials/get-signature",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v2",
-								"materials",
-								"get-signature"
-							]
-						}
+						"url": "http://localhost:8080/api/v2/materials/get-signature"
 					},
 					"response": [
 						{
@@ -902,24 +878,11 @@
 									"mode": "raw",
 									"raw": "{\r\n    \"email\":\"faculty.clg@gmail.com\",\r\n    \"password\":\"securePassword123\"\r\n}"
 								},
-								"url": {
-									"raw": "http://localhost:8080/api/v2/materials/get-signature",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"v2",
-										"materials",
-										"get-signature"
-									]
-								}
+								"url": "http://localhost:8080/api/v2/materials/get-signature"
 							},
 							"status": "OK",
 							"code": 200,
-							"_postman_previewlanguage": "",
+							"_postman_previewlanguage": null,
 							"header": [
 								{
 									"key": "X-Powered-By",
@@ -963,7 +926,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"success\": true,\n    \"signature\": \"8dbed951c4cd821b5a0e03af5b82587d6f45132a\",\n    \"timestamp\": 1760519831,\n    \"folder\": \"collegehub_materials\",\n    \"apiKey\": \"OurApiKey\"\n}"
+							"body": "{\n    \"success\": true,\n    \"signature\": \"8dbed951c4cd821b5a0e03af5b82587d6f45132a\",\n    \"timestamp\": 1760519831,\n    \"folder\": \"collegehub_materials\",\n    \"apiKey\": \"929365264769451\"\n}"
 						}
 					]
 				},
@@ -984,20 +947,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:8080/api/v2/student/resources",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v2",
-								"student",
-								"resources"
-							]
-						}
+						"url": "http://localhost:8080/api/v2/student/resources"
 					},
 					"response": [
 						{
@@ -1014,24 +964,11 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "http://localhost:8080/api/v2/student/resources",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"v2",
-										"student",
-										"resources"
-									]
-								}
+								"url": "http://localhost:8080/api/v2/student/resources"
 							},
 							"status": "OK",
 							"code": 200,
-							"_postman_previewlanguage": "",
+							"_postman_previewlanguage": null,
 							"header": [
 								{
 									"key": "X-Powered-By",
@@ -1098,19 +1035,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:8080/api/v2/announcement",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v2",
-								"announcement"
-							]
-						}
+						"url": "http://localhost:8080/api/v2/announcement"
 					},
 					"response": [
 						{
@@ -1127,23 +1052,11 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "http://localhost:8080/api/v2/announcement",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"v2",
-										"announcement"
-									]
-								}
+								"url": "http://localhost:8080/api/v2/announcement"
 							},
 							"status": "Created",
 							"code": 201,
-							"_postman_previewlanguage": "",
+							"_postman_previewlanguage": null,
 							"header": [
 								{
 									"key": "X-Powered-By",
@@ -1205,20 +1118,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:8080/api/v2/announcement/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v2",
-								"announcement",
-								"1"
-							]
-						}
+						"url": "http://localhost:8080/api/v2/announcement/1"
 					},
 					"response": [
 						{
@@ -1235,24 +1135,11 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "http://localhost:8080/api/v2/announcement/3",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"v2",
-										"announcement",
-										"3"
-									]
-								}
+								"url": "http://localhost:8080/api/v2/announcement/3"
 							},
 							"status": "OK",
 							"code": 200,
-							"_postman_previewlanguage": "",
+							"_postman_previewlanguage": null,
 							"header": [
 								{
 									"key": "X-Powered-By",
@@ -1305,20 +1192,7 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/v2/announcement/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v2",
-								"announcement",
-								"1"
-							]
-						}
+						"url": "http://localhost:8080/api/v2/announcement/1"
 					},
 					"response": [
 						{
@@ -1326,24 +1200,11 @@
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "http://localhost:8080/api/v2/announcement/3",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"v2",
-										"announcement",
-										"3"
-									]
-								}
+								"url": "http://localhost:8080/api/v2/announcement/3"
 							},
 							"status": "OK",
 							"code": 200,
-							"_postman_previewlanguage": "",
+							"_postman_previewlanguage": null,
 							"header": [
 								{
 									"key": "X-Powered-By",
@@ -1390,6 +1251,14 @@
 							"body": "{\n    \"statusCode\": 200,\n    \"data\": {},\n    \"message\": \"Announcement deleted successfully.\",\n    \"success\": true\n}"
 						}
 					]
+				},
+				{
+					"name": "content",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		}
